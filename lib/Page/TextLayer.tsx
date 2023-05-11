@@ -4,6 +4,8 @@ import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 import * as pdfjs from 'pdfjs-dist';
 
+import './TextLayer.css';
+
 import PageContext from '../PageContext';
 
 import { useResolver } from '../shared/hooks';

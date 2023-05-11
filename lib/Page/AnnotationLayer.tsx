@@ -4,6 +4,8 @@ import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 import * as pdfjs from 'pdfjs-dist';
 
+import './AnnotationLayer.css';
+
 import DocumentContext from '../DocumentContext';
 import PageContext from '../PageContext';
 
