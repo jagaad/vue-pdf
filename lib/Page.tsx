@@ -1,4 +1,12 @@
-import { inject, provide, ref, type Ref, Fragment, defineComponent } from 'vue';
+import {
+	inject,
+	provide,
+	ref,
+	type Ref,
+	Fragment,
+	defineComponent,
+	computed,
+} from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import makeEventProps from 'make-event-props';
 import invariant from 'tiny-invariant';
@@ -143,7 +151,7 @@ export const Page = defineComponent<PageProps>((props) => {
 
 	const rotate = rotateProps ?? (page ? page.rotate : null);
 
-	const scale = useMemo(() => {
+	const scale = computed(() => {
 		if (!page) {
 			return null;
 		}
@@ -168,7 +176,7 @@ export const Page = defineComponent<PageProps>((props) => {
 		}
 
 		return scaleWithDefault * pageScale;
-	}, [height, page, rotate, scaleProps, width]);
+	});
 
 	function hook() {
 		return () => {
@@ -190,12 +198,12 @@ export const Page = defineComponent<PageProps>((props) => {
 	 */
 	function onLoadSuccess() {
 		if (onLoadSuccessProps) {
-			if (!page || !scale) {
+			if (!page || !scale.value) {
 				// Impossible, but TypeScript doesn't know that
 				return;
 			}
 
-			onLoadSuccessProps(makePageCallback(page, scale));
+			onLoadSuccessProps(makePageCallback(page, scale.value));
 		}
 
 		if (registerPage) {
@@ -274,7 +282,7 @@ export const Page = defineComponent<PageProps>((props) => {
 		isProvided(pageIndex) &&
 		isProvided(pageNumber) &&
 		isProvided(rotate) &&
-		isProvided(scale)
+		isProvided(scale.value)
 			? {
 					canvasBackground,
 					customTextRenderer,
@@ -294,19 +302,21 @@ export const Page = defineComponent<PageProps>((props) => {
 					pageNumber,
 					renderForms,
 					rotate,
-					scale,
+					scale: scale.value,
 			  }
 			: null;
 
-	const eventProps = useMemo(
-		() =>
-			makeEventProps(otherProps, () =>
-				page ? (scale ? makePageCallback(page, scale) : undefined) : page,
-			),
-		[otherProps, page, scale],
+	const eventProps = computed(() =>
+		makeEventProps(otherProps, () =>
+			page
+				? scale.value
+					? makePageCallback(page, scale.value)
+					: undefined
+				: page,
+		),
 	);
 
-	const pageKey = `${pageIndex}@${scale}/${rotate}`;
+	const pageKey = `${pageIndex}@${scale.value}/${rotate}`;
 
 	const pageKeyNoScale = `${pageIndex}/${rotate}`;
 
@@ -385,13 +395,13 @@ export const Page = defineComponent<PageProps>((props) => {
 			data-page-number={pageNumber}
 			ref={pageElement}
 			style={{
-				['--scale-factor' as string]: `${scale}`,
+				['--scale-factor' as string]: `${scale.value}`,
 				backgroundColor: canvasBackground || 'white',
 				position: 'relative',
 				minWidth: 'min-content',
 				minHeight: 'min-content',
 			}}
-			{...eventProps}
+			{...eventProps.value}
 		>
 			{renderContent()}
 		</div>

@@ -1,4 +1,4 @@
-import { defineComponent, inject, ref } from 'vue';
+import { computed, defineComponent, inject, ref } from 'vue';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 import * as pdfjs from 'pdfjs-dist';
@@ -73,15 +73,12 @@ export const PageCanvas = defineComponent<PageCanvasProps>((props) => {
 		}
 	}
 
-	const renderViewport = useMemo(
-		() =>
-			page.getViewport({ scale: scale * devicePixelRatio, rotation: rotate }),
-		[devicePixelRatio, page, rotate, scale],
+	const renderViewport = computed(() =>
+		page.getViewport({ scale: scale * devicePixelRatio, rotation: rotate }),
 	);
 
-	const viewport = useMemo(
-		() => page.getViewport({ scale, rotation: rotate }),
-		[page, rotate, scale],
+	const viewport = computed(() =>
+		page.getViewport({ scale, rotation: rotate }),
 	);
 
 	function drawPageOnCanvas() {
@@ -98,11 +95,11 @@ export const PageCanvas = defineComponent<PageCanvasProps>((props) => {
 			return;
 		}
 
-		canvas.width = renderViewport.width;
-		canvas.height = renderViewport.height;
+		canvas.width = renderViewport.value.width;
+		canvas.height = renderViewport.value.height;
 
-		canvas.style.width = `${Math.floor(viewport.width)}px`;
-		canvas.style.height = `${Math.floor(viewport.height)}px`;
+		canvas.style.width = `${Math.floor(viewport.value.width)}px`;
+		canvas.style.height = `${Math.floor(viewport.value.height)}px`;
 		canvas.style.visibility = 'hidden';
 
 		const renderContext: RenderParameters = {
@@ -112,7 +109,7 @@ export const PageCanvas = defineComponent<PageCanvasProps>((props) => {
 			canvasContext: canvas.getContext('2d', {
 				alpha: false,
 			}) as CanvasRenderingContext2D,
-			viewport: renderViewport,
+			viewport: renderViewport.value,
 		};
 		if (canvasBackground) {
 			renderContext.background = canvasBackground;

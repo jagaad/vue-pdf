@@ -1,4 +1,4 @@
-import { defineComponent, inject, provide, type Ref } from 'vue';
+import { computed, defineComponent, inject, provide, type Ref } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import makeEventProps from 'make-event-props';
 import invariant from 'tiny-invariant';
@@ -144,9 +144,8 @@ export const Outline = defineComponent({
 			onClick: onItemClick,
 		};
 
-		const eventProps = useMemo(
-			() => makeEventProps(otherProps, () => outline),
-			[otherProps, outline],
+		const eventProps = computed(() =>
+			makeEventProps(otherProps, () => outline),
 		);
 
 		if (!outline) {
@@ -176,7 +175,7 @@ export const Outline = defineComponent({
 			<div
 				class={['react-pdf__Outline', className]}
 				ref={inputRef}
-				{...eventProps}
+				{...eventProps.value}
 			>
 				{renderOutline()}
 			</div>

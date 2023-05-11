@@ -1,8 +1,17 @@
-import { ref, type Ref, defineComponent, provide, Fragment } from 'vue';
+import {
+	computed,
+	defineComponent,
+	Fragment,
+	provide,
+	ref,
+	type Ref,
+} from 'vue';
+import type { EventProps } from 'make-event-props';
 import makeEventProps from 'make-event-props';
 import makeCancellable from 'make-cancellable-promise';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
+import type { PDFDocumentProxy } from 'pdfjs-dist';
 import * as pdfjs from 'pdfjs-dist';
 
 import { DocumentContext } from './DocumentContext';
@@ -24,9 +33,6 @@ import {
 } from './shared/utils';
 
 import { useResolver } from './shared/hooks';
-
-import type { PDFDocumentProxy } from 'pdfjs-dist';
-import type { EventProps } from 'make-event-props';
 import type {
 	ClassName,
 	DocumentCallback,
@@ -417,10 +423,7 @@ export const Document = defineComponent<DocumentProps>((props, ctx) => {
 		unregisterPage,
 	};
 
-	const eventProps = useMemo(
-		() => makeEventProps(otherProps, () => pdf),
-		[otherProps, pdf],
-	);
+	const eventProps = computed(() => makeEventProps(otherProps, () => pdf));
 
 	function renderContent() {
 		if (!file) {
@@ -449,10 +452,10 @@ export const Document = defineComponent<DocumentProps>((props, ctx) => {
 			);
 		}
 
-		provide(DocumentContext, childContext);
-
 		return <Fragment v-slots={slots} />;
 	}
+
+	provide(DocumentContext, childContext);
 
 	return () => (
 		<div
@@ -461,7 +464,7 @@ export const Document = defineComponent<DocumentProps>((props, ctx) => {
 			style={{
 				['--scale-factor' as string]: '1',
 			}}
-			{...eventProps}
+			{...eventProps.value}
 		>
 			{renderContent()}
 		</div>

@@ -1,4 +1,4 @@
-import { defineComponent, inject, ref } from 'vue';
+import { computed, defineComponent, inject, ref } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
@@ -176,9 +176,8 @@ export const TextLayer = defineComponent(() => {
 		end.classList.remove('active');
 	}
 
-	const viewport = useMemo(
-		() => page.getViewport({ scale, rotation: rotate }),
-		[page, rotate, scale],
+	const viewport = computed(() =>
+		page.getViewport({ scale, rotation: rotate }),
 	);
 
 	function renderTextLayer() {
@@ -199,7 +198,7 @@ export const TextLayer = defineComponent(() => {
 		const parameters = {
 			container: layer,
 			textContentSource,
-			viewport,
+			viewport: viewport.value,
 		};
 
 		const cancellable = pdfjs.renderTextLayer(parameters);

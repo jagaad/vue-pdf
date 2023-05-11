@@ -1,4 +1,4 @@
-import { defineComponent, inject } from 'vue';
+import { computed, defineComponent, inject } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
@@ -75,9 +75,8 @@ export const PageSVG = defineComponent(() => {
 		}
 	}
 
-	const viewport = useMemo(
-		() => page.getViewport({ scale, rotation: rotate }),
-		[page, rotate, scale],
+	const viewport = computed(() =>
+		page.getViewport({ scale, rotation: rotate }),
 	);
 
 	function resetSVG() {
@@ -101,7 +100,7 @@ export const PageSVG = defineComponent(() => {
 				);
 
 				svgGfx
-					.getSVG(operatorList, viewport)
+					.getSVG(operatorList, viewport.value)
 					.then((nextSvg) => {
 						svgDispatch({ type: 'RESOLVE', value: nextSvg });
 					})
@@ -145,13 +144,13 @@ export const PageSVG = defineComponent(() => {
 			element.appendChild(svg);
 		}
 
-		const { width, height } = viewport;
+		const { width, height } = viewport.value;
 
 		svg.setAttribute('width', `${width}`);
 		svg.setAttribute('height', `${height}`);
 	}
 
-	const { width, height } = viewport;
+	const { width, height } = viewport.value;
 
 	return () => (
 		<div
