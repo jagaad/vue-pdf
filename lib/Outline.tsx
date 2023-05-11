@@ -1,3 +1,4 @@
+import { type Ref } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import makeEventProps from 'make-event-props';
 import invariant from 'tiny-invariant';
@@ -20,7 +21,7 @@ type PDFOutline = Awaited<ReturnType<PDFDocumentProxy['getOutline']>>;
 
 type OutlineProps = {
 	className?: string;
-	inputRef?: React.Ref<HTMLDivElement>;
+	inputRef?: Ref<HTMLDivElement>;
 	onItemClick?: (props: OnItemClickArgs) => void;
 	onLoadError?: (error: Error) => void;
 	onLoadSuccess?: (outline: PDFOutline | null) => void;

@@ -1,6 +1,7 @@
 /**
  * Loads a PDF document. Passes it to all children.
  */
+import { ref, type Ref } from 'vue';
 import makeEventProps from 'make-event-props';
 import makeCancellable from 'make-cancellable-promise';
 import invariant from 'tiny-invariant';
@@ -15,14 +16,14 @@ import LinkService from './LinkService';
 import PasswordResponses from './PasswordResponses';
 
 import {
-  cancelRunningTask,
-  dataURItoByteString,
-  displayCORSWarning,
-  isArrayBuffer,
-  isBlob,
-  isBrowser,
-  isDataURI,
-  loadFromFile,
+	cancelRunningTask,
+	dataURItoByteString,
+	displayCORSWarning,
+	isArrayBuffer,
+	isBlob,
+	isBrowser,
+	isDataURI,
+	loadFromFile,
 } from './shared/utils';
 
 import { useResolver } from './shared/hooks';
@@ -71,7 +72,7 @@ type DocumentProps = {
 	externalLinkTarget?: ExternalLinkTarget;
 	file?: File;
 	imageResourcesPath?: ImageResourcesPath;
-	inputRef?: React.Ref<HTMLDivElement>;
+	inputRef?: Ref<HTMLDivElement>;
 	loading?: NodeOrRenderer;
 	noData?: NodeOrRenderer;
 	onItemClick?: OnItemClick;
@@ -128,18 +129,18 @@ const Document = forwardRef(function Document(
 		rotate,
 		...otherProps
 	}: DocumentProps,
-	ref,
+	forwardedRef,
 ) {
 	const [sourceState, sourceDispatch] = useResolver<Source | null>();
 	const { value: source, error: sourceError } = sourceState;
 	const [pdfState, pdfDispatch] = useResolver<PDFDocumentProxy>();
 	const { value: pdf, error: pdfError } = pdfState;
 
-	const linkService = useRef(new LinkService());
+	const linkService = ref(new LinkService());
 
-	const pages = useRef<HTMLDivElement[]>([]);
+	const pages = ref<HTMLDivElement[]>([]);
 
-	const viewer = useRef({
+	const viewer = ref({
 		// Handling jumping to internal links target
 		scrollPageIntoView: ({
 			dest,
@@ -153,7 +154,7 @@ const Document = forwardRef(function Document(
 			}
 
 			// If not, try to look for target page within the <Document>.
-			const page = pages.current[pageIndex];
+			const page = pages.value[pageIndex];
 
 			if (page) {
 				// Scroll to the page automatically
@@ -169,7 +170,7 @@ const Document = forwardRef(function Document(
 	});
 
 	useImperativeHandle(
-		ref,
+		forwardedRef,
 		() => {
 			return {
 				linkService,
@@ -322,8 +323,8 @@ const Document = forwardRef(function Document(
 			onLoadSuccessProps(pdf);
 		}
 
-		pages.current = new Array(pdf.numPages);
-		linkService.current.setDocument(pdf);
+		pages.value = new Array(pdf.numPages);
+		linkService.value.setDocument(pdf);
 	}
 
 	/**
@@ -408,24 +409,24 @@ const Document = forwardRef(function Document(
 	);
 
 	function setupLinkService() {
-		linkService.current.setViewer(viewer.current);
-		linkService.current.setExternalLinkRel(externalLinkRel);
-		linkService.current.setExternalLinkTarget(externalLinkTarget);
+		linkService.value.setViewer(viewer.value);
+		linkService.value.setExternalLinkRel(externalLinkRel);
+		linkService.value.setExternalLinkTarget(externalLinkTarget);
 	}
 
 	useEffect(setupLinkService, [externalLinkRel, externalLinkTarget]);
 
 	function registerPage(pageIndex: number, ref: HTMLDivElement) {
-		pages.current[pageIndex] = ref;
+		pages.value[pageIndex] = ref;
 	}
 
 	function unregisterPage(pageIndex: number) {
-		delete pages.current[pageIndex];
+		delete pages.value[pageIndex];
 	}
 
 	const childContext = {
 		imageResourcesPath,
-		linkService: linkService.current,
+		linkService: linkService.value,
 		pdf,
 		registerPage,
 		renderMode,

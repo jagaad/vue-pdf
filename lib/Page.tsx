@@ -1,3 +1,4 @@
+import { ref, type Ref } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import makeEventProps from 'make-event-props';
 import invariant from 'tiny-invariant';
@@ -45,7 +46,7 @@ const defaultScale = 1;
 
 type PageProps = {
 	canvasBackground?: string;
-	canvasRef?: React.Ref<HTMLCanvasElement>;
+	canvasRef?: Ref<HTMLCanvasElement>;
 	children?: React.ReactNode;
 	className?: string;
 	customTextRenderer?: CustomTextRenderer;
@@ -53,7 +54,7 @@ type PageProps = {
 	error?: NodeOrRenderer;
 	height?: number;
 	imageResourcesPath?: string;
-	inputRef?: React.Ref<HTMLDivElement>;
+	inputRef?: Ref<HTMLDivElement>;
 	loading?: NodeOrRenderer;
 	noData?: NodeOrRenderer;
 	onGetAnnotationsError?: OnGetAnnotationsError;
@@ -131,7 +132,7 @@ export default function Page(props: PageProps) {
 
 	const [pageState, pageDispatch] = useResolver<PDFPageProxy>();
 	const { value: page, error: pageError } = pageState;
-	const pageElement = useRef<HTMLDivElement>(null);
+	const pageElement = ref<HTMLDivElement | null>(null);
 
 	invariant(pdf, 'Attempted to load a page, but no document was specified.');
 
@@ -200,12 +201,12 @@ export default function Page(props: PageProps) {
 		}
 
 		if (registerPage) {
-			if (pageIndex === null || !pageElement.current) {
+			if (pageIndex === null || !pageElement.value) {
 				// Impossible, but TypeScript doesn't know that
 				return;
 			}
 
-			registerPage(pageIndex, pageElement.current);
+			registerPage(pageIndex, pageElement.value);
 		}
 	}
 
@@ -401,4 +402,3 @@ export default function Page(props: PageProps) {
 		</div>
 	);
 }
-

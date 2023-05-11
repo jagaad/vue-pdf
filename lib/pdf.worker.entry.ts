@@ -6,6 +6,6 @@
  */
 
 (
-  (typeof window !== 'undefined' ? window : {}) as Window &
-    typeof globalThis & { pdfjsWorker: unknown }
+	(typeof window !== 'undefined' ? window : {}) as Window &
+		typeof globalThis & { pdfjsWorker: unknown }
 ).pdfjsWorker = require('pdfjs-dist/build/pdf.worker');

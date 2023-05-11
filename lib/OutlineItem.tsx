@@ -1,9 +1,10 @@
+import { ref } from 'vue';
 import invariant from 'tiny-invariant';
 
 import DocumentContext from './DocumentContext';
 import OutlineContext from './OutlineContext';
 
-import Ref from './Ref';
+import PdfRef from './PdfRef';
 
 import { isDefined } from './shared/utils';
 
@@ -11,9 +12,9 @@ import type { PDFDocumentProxy } from 'pdfjs-dist';
 import type { RefProxy } from 'pdfjs-dist/types/src/display/api';
 
 function useCachedValue<T>(getter: () => T): () => T {
-	const ref = useRef<T>();
+	const _ref = ref<T>();
 
-	const currentValue = ref.current;
+	const currentValue = _ref.value;
 
 	if (isDefined(currentValue)) {
 		return () => currentValue;
@@ -22,7 +23,7 @@ function useCachedValue<T>(getter: () => T): () => T {
 	return () => {
 		const value = getter();
 
-		ref.current = value;
+		_ref.value = value;
 
 		return value;
 	};
@@ -73,7 +74,7 @@ export default function OutlineItem(props: OutlineItemProps) {
 
 		const [ref] = destination as [RefProxy];
 
-		return pdf.getPageIndex(new Ref(ref));
+		return pdf.getPageIndex(new PdfRef(ref));
 	});
 
 	const getPageNumber = useCachedValue(async () => {

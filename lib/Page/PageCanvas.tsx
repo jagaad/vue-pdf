@@ -1,3 +1,4 @@
+import { ref, type Ref } from 'vue';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 import * as pdfjs from 'pdfjs-dist';
@@ -5,10 +6,10 @@ import * as pdfjs from 'pdfjs-dist';
 import PageContext from '../PageContext';
 
 import {
-  cancelRunningTask,
-  getDevicePixelRatio,
-  isCancelException,
-  makePageCallback,
+	cancelRunningTask,
+	getDevicePixelRatio,
+	isCancelException,
+	makePageCallback,
 } from '../shared/utils';
 
 import type { RenderParameters } from 'pdfjs-dist/types/src/display/api';
@@ -16,7 +17,7 @@ import type { RenderParameters } from 'pdfjs-dist/types/src/display/api';
 const ANNOTATION_MODE = pdfjs.AnnotationMode;
 
 type PageCanvasProps = {
-	canvasRef?: React.Ref<HTMLCanvasElement>;
+	canvasRef?: Ref<HTMLCanvasElement>;
 };
 
 export default function PageCanvas(props: PageCanvasProps) {
@@ -37,7 +38,7 @@ export default function PageCanvas(props: PageCanvasProps) {
 	} = mergedProps;
 	const { canvasRef } = props;
 
-	const canvasElement = useRef<HTMLCanvasElement>(null);
+	const canvasElement = ref<HTMLCanvasElement | null>(null);
 
 	invariant(
 		page,
