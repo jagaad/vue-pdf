@@ -11,7 +11,6 @@ import OutlineItem from './OutlineItem';
 import { cancelRunningTask } from './shared/utils';
 
 import { useResolver } from './shared/hooks';
-import { eventProps, isClassName, isPdf, isRef } from './shared/propTypes';
 
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import type { EventProps } from 'make-event-props';
@@ -182,13 +181,3 @@ export default function Outline(props: OutlineProps) {
 		</div>
 	);
 }
-
-Outline.propTypes = {
-	...eventProps,
-	className: isClassName,
-	inputRef: isRef,
-	onItemClick: PropTypes.func,
-	onLoadError: PropTypes.func,
-	onLoadSuccess: PropTypes.func,
-	pdf: isPdf,
-};

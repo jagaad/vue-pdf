@@ -19,16 +19,6 @@ import {
 } from './shared/utils';
 
 import { useResolver } from './shared/hooks';
-import {
-	eventProps,
-	isClassName,
-	isPageIndex,
-	isPageNumber,
-	isPdf,
-	isRef,
-	isRenderMode,
-	isRotate,
-} from './shared/propTypes';
 
 import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist';
 import type { EventProps } from 'make-event-props';
@@ -412,38 +402,3 @@ export default function Page(props: PageProps) {
 	);
 }
 
-const isFunctionOrNode = PropTypes.oneOfType([PropTypes.func, PropTypes.node]);
-
-Page.propTypes = {
-	...eventProps,
-	canvasBackground: PropTypes.string,
-	canvasRef: isRef,
-	children: PropTypes.node,
-	className: isClassName,
-	customTextRenderer: PropTypes.func,
-	devicePixelRatio: PropTypes.number,
-	error: isFunctionOrNode,
-	height: PropTypes.number,
-	imageResourcesPath: PropTypes.string,
-	inputRef: isRef,
-	loading: isFunctionOrNode,
-	noData: isFunctionOrNode,
-	onGetTextError: PropTypes.func,
-	onGetTextSuccess: PropTypes.func,
-	onLoadError: PropTypes.func,
-	onLoadSuccess: PropTypes.func,
-	onRenderError: PropTypes.func,
-	onRenderSuccess: PropTypes.func,
-	onRenderTextLayerError: PropTypes.func,
-	onRenderTextLayerSuccess: PropTypes.func,
-	pageIndex: isPageIndex,
-	pageNumber: isPageNumber,
-	pdf: isPdf,
-	renderAnnotationLayer: PropTypes.bool,
-	renderForms: PropTypes.bool,
-	renderMode: isRenderMode,
-	renderTextLayer: PropTypes.bool,
-	rotate: isRotate,
-	scale: PropTypes.number,
-	width: PropTypes.number,
-};
