@@ -4,8 +4,8 @@ import makeEventProps from 'make-event-props';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 
-import DocumentContext from './DocumentContext';
-import PageContext from './PageContext';
+import { DocumentContext } from './DocumentContext';
+import { PageContext } from './PageContext';
 
 import { Message } from './Message';
 import { PageCanvas } from './Page/PageCanvas';

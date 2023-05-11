@@ -6,8 +6,8 @@ import * as pdfjs from 'pdfjs-dist';
 
 import './AnnotationLayer.css';
 
-import DocumentContext from '../DocumentContext';
-import PageContext from '../PageContext';
+import { DocumentContext } from '../DocumentContext';
+import { PageContext } from '../PageContext';
 
 import { useResolver } from '../shared/hooks';
 import { cancelRunningTask } from '../shared/utils';

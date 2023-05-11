@@ -4,8 +4,8 @@ import makeEventProps from 'make-event-props';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 
-import DocumentContext from './DocumentContext';
-import OutlineContext from './OutlineContext';
+import { DocumentContext } from './DocumentContext';
+import { OutlineContext } from './OutlineContext';
 
 import { OutlineItem } from './OutlineItem';
 

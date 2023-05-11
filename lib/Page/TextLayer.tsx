@@ -6,7 +6,7 @@ import * as pdfjs from 'pdfjs-dist';
 
 import './TextLayer.css';
 
-import PageContext from '../PageContext';
+import { PageContext } from '../PageContext';
 
 import { useResolver } from '../shared/hooks';
 import { cancelRunningTask } from '../shared/utils';

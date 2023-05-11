@@ -1,8 +1,8 @@
 import { defineComponent, inject, ref } from 'vue';
 import invariant from 'tiny-invariant';
 
-import DocumentContext from './DocumentContext';
-import OutlineContext from './OutlineContext';
+import { DocumentContext } from './DocumentContext';
+import { OutlineContext } from './OutlineContext';
 
 import { PdfRef } from './PdfRef';
 

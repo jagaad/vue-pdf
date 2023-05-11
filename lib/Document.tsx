@@ -1,6 +1,3 @@
-/**
- * Loads a PDF document. Passes it to all children.
- */
 import { ref, type Ref, defineComponent, provide, Fragment } from 'vue';
 import makeEventProps from 'make-event-props';
 import makeCancellable from 'make-cancellable-promise';
@@ -8,12 +5,12 @@ import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 import * as pdfjs from 'pdfjs-dist';
 
-import DocumentContext from './DocumentContext';
+import { DocumentContext } from './DocumentContext';
 
 import { Message } from './Message';
 
 import { LinkService } from './LinkService';
-import PasswordResponses from './PasswordResponses';
+import { PasswordResponses } from './PasswordResponses';
 
 import {
 	cancelRunningTask,
