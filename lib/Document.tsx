@@ -107,8 +107,6 @@ const defaultOnPassword: OnPassword = (callback, reason) => {
 
 export const Document = defineComponent<DocumentProps>((props, ctx) => {
 	const { expose, slots } = ctx;
-	// TODO
-	// eslint-disable-next-line vue/no-setup-props-destructure
 	const {
 		externalLinkRel,
 		externalLinkTarget,
