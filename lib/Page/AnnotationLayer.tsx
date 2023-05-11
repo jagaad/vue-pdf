@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
@@ -13,14 +13,14 @@ import { cancelRunningTask } from '../shared/utils';
 import type { Annotations } from '../shared/types';
 
 export default function AnnotationLayer() {
-	const documentContext = useContext(DocumentContext);
+	const documentContext = inject(DocumentContext, null);
 
 	invariant(
 		documentContext,
 		'Unable to find Document context. Did you wrap <Page /> in <Document />?',
 	);
 
-	const pageContext = useContext(PageContext);
+	const pageContext = inject(PageContext, null);
 
 	invariant(pageContext, 'Unable to find Page context.');
 

@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue';
+import { inject, ref, type Ref } from 'vue';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 import * as pdfjs from 'pdfjs-dist';
@@ -19,7 +19,7 @@ const ANNOTATION_MODE = pdfjs.AnnotationMode;
 type PageCanvasProps = {};
 
 export default function PageCanvas(props: PageCanvasProps) {
-	const context = useContext(PageContext);
+	const context = inject(PageContext, null);
 
 	invariant(context, 'Unable to find Page context.');
 

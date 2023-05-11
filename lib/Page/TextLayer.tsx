@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
@@ -20,7 +20,7 @@ function isTextItem(item: TextItem | TextMarkedContent): item is TextItem {
 }
 
 export default function TextLayer() {
-	const context = useContext(PageContext);
+	const context = inject(PageContext, null);
 
 	invariant(context, 'Unable to find Page context.');
 

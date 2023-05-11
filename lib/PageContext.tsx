@@ -1,3 +1,6 @@
+import type { InjectionKey } from 'vue';
 import type { PageContextType } from './shared/types';
 
-export default createContext<PageContextType>(null);
+const pageContext: InjectionKey<PageContextType> = Symbol('PageContextType');
+
+export default pageContext;

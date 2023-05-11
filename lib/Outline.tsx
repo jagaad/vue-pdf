@@ -1,4 +1,4 @@
-import { type Ref } from 'vue';
+import { inject, provide, type Ref } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import makeEventProps from 'make-event-props';
 import invariant from 'tiny-invariant';
@@ -15,7 +15,7 @@ import { useResolver } from './shared/hooks';
 
 import type { PDFDocumentProxy } from 'pdfjs-dist';
 import type { EventProps } from 'make-event-props';
-import type { OnItemClickArgs } from './shared/types';
+import type { OnItemClickArgs, OutlineContextType } from './shared/types';
 
 type PDFOutline = Awaited<ReturnType<PDFDocumentProxy['getOutline']>>;
 
@@ -29,7 +29,7 @@ type OutlineProps = {
 } & EventProps<PDFOutline | null | false | undefined>;
 
 export default function Outline(props: OutlineProps) {
-	const context = useContext(DocumentContext);
+	const context = inject(DocumentContext, null);
 
 	invariant(
 		context,
@@ -140,7 +140,7 @@ export default function Outline(props: OutlineProps) {
 		[outline],
 	);
 
-	const childContext = {
+	const childContext: OutlineContextType = {
 		onClick: onItemClick,
 	};
 
@@ -170,15 +170,15 @@ export default function Outline(props: OutlineProps) {
 		);
 	}
 
+	provide(OutlineContext, childContext);
+
 	return (
 		<div
 			class={['react-pdf__Outline', className]}
 			ref={inputRef}
 			{...eventProps}
 		>
-			<OutlineContext.Provider value={childContext}>
-				{renderOutline()}
-			</OutlineContext.Provider>
+			{renderOutline()}
 		</div>
 	);
 }

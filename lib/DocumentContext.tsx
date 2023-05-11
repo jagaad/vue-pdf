@@ -1,3 +1,8 @@
+import { type InjectionKey } from 'vue';
 import type { DocumentContextType } from './shared/types';
 
-export default createContext<DocumentContextType>(null);
+const documentContext: InjectionKey<DocumentContextType> = Symbol(
+	'DocumentContextType',
+);
+
+export default documentContext;

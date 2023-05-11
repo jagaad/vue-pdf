@@ -1,7 +1,7 @@
 /**
  * Loads a PDF document. Passes it to all children.
  */
-import { ref, type Ref, defineComponent } from 'vue';
+import { ref, type Ref, defineComponent, provide, Fragment } from 'vue';
 import makeEventProps from 'make-event-props';
 import makeCancellable from 'make-cancellable-promise';
 import invariant from 'tiny-invariant';
@@ -33,6 +33,7 @@ import type { EventProps } from 'make-event-props';
 import type {
 	ClassName,
 	DocumentCallback,
+	DocumentContextType,
 	ExternalLinkRel,
 	ExternalLinkTarget,
 	File,
@@ -132,7 +133,7 @@ const Document = defineComponent<DocumentProps>({
 		const [pdfState, pdfDispatch] = useResolver<PDFDocumentProxy>();
 		const { value: pdf, error: pdfError } = pdfState;
 
-		const linkService = ref(new LinkService());
+		const linkService = new LinkService();
 
 		const pages = ref<HTMLDivElement[]>([]);
 
@@ -314,7 +315,7 @@ const Document = defineComponent<DocumentProps>({
 			}
 
 			pages.value = new Array(pdf.numPages);
-			linkService.value.setDocument(pdf);
+			linkService.setDocument(pdf);
 		}
 
 		/**
@@ -399,9 +400,9 @@ const Document = defineComponent<DocumentProps>({
 		);
 
 		function setupLinkService() {
-			linkService.value.setViewer(viewer.value);
-			linkService.value.setExternalLinkRel(externalLinkRel);
-			linkService.value.setExternalLinkTarget(externalLinkTarget);
+			linkService.setViewer(viewer.value);
+			linkService.setExternalLinkRel(externalLinkRel);
+			linkService.setExternalLinkTarget(externalLinkTarget);
 		}
 
 		useEffect(setupLinkService, [externalLinkRel, externalLinkTarget]);
@@ -414,9 +415,9 @@ const Document = defineComponent<DocumentProps>({
 			delete pages.value[pageIndex];
 		}
 
-		const childContext = {
+		const childContext: DocumentContextType = {
 			imageResourcesPath,
-			linkService: linkService.value,
+			linkService,
 			pdf,
 			registerPage,
 			renderMode,
@@ -428,10 +429,6 @@ const Document = defineComponent<DocumentProps>({
 			() => makeEventProps(otherProps, () => pdf),
 			[otherProps, pdf],
 		);
-
-		function renderChildren() {
-			return <DocumentContext.Provider value={childContext} v-slots={slots} />;
-		}
 
 		function renderContent() {
 			if (!file) {
@@ -460,7 +457,9 @@ const Document = defineComponent<DocumentProps>({
 				);
 			}
 
-			return renderChildren();
+			provide(DocumentContext, childContext);
+
+			return <Fragment v-slots={slots} />;
 		}
 
 		return (

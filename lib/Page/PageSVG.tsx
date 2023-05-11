@@ -1,3 +1,4 @@
+import { inject } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
@@ -23,7 +24,7 @@ type SVGGraphics = {
 };
 
 export default function PageSVG() {
-	const context = useContext(PageContext);
+	const context = inject(PageContext, null);
 
 	invariant(context, 'Unable to find Page context.');
 

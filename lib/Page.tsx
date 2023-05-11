@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue';
+import { inject, provide, ref, type Ref, Fragment } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import makeEventProps from 'make-event-props';
 import invariant from 'tiny-invariant';
@@ -39,6 +39,7 @@ import type {
 	OnRenderTextLayerError,
 	OnRenderTextLayerSuccess,
 	PageCallback,
+	PageContextType,
 	RenderMode,
 } from './shared/types';
 
@@ -47,7 +48,6 @@ const defaultScale = 1;
 type PageProps = {
 	canvasBackground?: string;
 	canvasRef?: Ref<HTMLCanvasElement>;
-	children?: React.ReactNode;
 	className?: string;
 	customTextRenderer?: CustomTextRenderer;
 	devicePixelRatio?: number;
@@ -82,7 +82,7 @@ type PageProps = {
 } & EventProps<PageCallback | false | undefined>;
 
 export default function Page(props: PageProps) {
-	const context = useContext(DocumentContext);
+	const context = inject(DocumentContext, null);
 
 	invariant(
 		context,
@@ -269,7 +269,7 @@ export default function Page(props: PageProps) {
 		[page, scale],
 	);
 
-	const childContext =
+	const childContext: PageContextType =
 		// Technically there cannot be page without pageIndex, pageNumber, rotate and scale, but TypeScript doesn't know that
 		page &&
 		isProvided(pageIndex) &&
@@ -343,17 +343,6 @@ export default function Page(props: PageProps) {
 		return <AnnotationLayer key={`${pageKey}_annotations`} />;
 	}
 
-	function renderChildren() {
-		return (
-			<PageContext.Provider value={childContext}>
-				{renderMainLayer()}
-				{renderTextLayer()}
-				{renderAnnotationLayer()}
-				{children}
-			</PageContext.Provider>
-		);
-	}
-
 	function renderContent() {
 		if (!pageNumber) {
 			return (
@@ -379,7 +368,16 @@ export default function Page(props: PageProps) {
 			);
 		}
 
-		return renderChildren();
+		provide(PageContext, childContext);
+
+		return (
+			<Fragment>
+				{renderMainLayer()}
+				{renderTextLayer()}
+				{renderAnnotationLayer()}
+				{children}
+			</Fragment>
+		);
 	}
 
 	return (

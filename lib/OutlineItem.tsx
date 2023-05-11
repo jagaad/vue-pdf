@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import invariant from 'tiny-invariant';
 
 import DocumentContext from './DocumentContext';
@@ -38,14 +38,14 @@ type OutlineItemProps = {
 };
 
 export default function OutlineItem(props: OutlineItemProps) {
-	const documentContext = useContext(DocumentContext);
+	const documentContext = inject(DocumentContext, null);
 
 	invariant(
 		documentContext,
 		'Unable to find Document context. Did you wrap <Outline /> in <Document />?',
 	);
 
-	const outlineContext = useContext(OutlineContext);
+	const outlineContext = inject(OutlineContext, null);
 
 	invariant(outlineContext, 'Unable to find Outline context.');
 
