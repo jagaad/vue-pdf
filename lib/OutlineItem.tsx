@@ -83,7 +83,7 @@ export default function OutlineItem(props: OutlineItemProps) {
 		return pageIndex + 1;
 	});
 
-	function onClick(event: React.MouseEvent<HTMLAnchorElement>) {
+	function onClick(event: MouseEvent) {
 		event.preventDefault();
 
 		if (!onClickProps) {

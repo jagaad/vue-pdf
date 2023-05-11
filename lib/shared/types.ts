@@ -1,3 +1,4 @@
+import { type VNode } from 'vue';
 import type {
 	PDFDataRangeTransport,
 	PDFDocumentProxy,
@@ -83,7 +84,7 @@ export type PageCallback = PDFPageProxy & {
 	originalHeight: number;
 };
 
-export type NodeOrRenderer = React.ReactNode | (() => React.ReactNode);
+export type NodeOrRenderer = VNode | (() => VNode);
 
 export type OnDocumentLoadError = OnError;
 
