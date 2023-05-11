@@ -1,12 +1,16 @@
+import { type FunctionalComponent } from 'vue';
+
 type MessageProps = {
-	children: React.ReactNode;
 	type: 'error' | 'loading' | 'no-data';
 };
 
-export default function Message({ children, type }: MessageProps) {
+const Message: FunctionalComponent<MessageProps> = ({ type }, { slots }) => {
 	return (
-		<div class={`react-pdf__message react-pdf__message--${type}`}>
-			{children}
-		</div>
+		<div
+			class={`react-pdf__message react-pdf__message--${type}`}
+			v-slots={slots}
+		/>
 	);
-}
+};
+
+export default Message;
