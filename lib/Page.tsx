@@ -54,7 +54,6 @@ type PageProps = {
 	error?: NodeOrRenderer;
 	height?: number;
 	imageResourcesPath?: string;
-	inputRef?: Ref<HTMLDivElement>;
 	loading?: NodeOrRenderer;
 	noData?: NodeOrRenderer;
 	onGetAnnotationsError?: OnGetAnnotationsError;
@@ -100,7 +99,6 @@ export default function Page(props: PageProps) {
 		devicePixelRatio,
 		error = 'Failed to load the page.',
 		height,
-		inputRef,
 		loading = 'Loading page…',
 		noData = 'No page specified.',
 		onGetAnnotationsError: onGetAnnotationsErrorProps,
@@ -388,7 +386,7 @@ export default function Page(props: PageProps) {
 		<div
 			class={['react-pdf__Page', className]}
 			data-page-number={pageNumber}
-			ref={mergeRefs(inputRef, pageElement)}
+			ref={pageElement}
 			style={{
 				['--scale-factor' as string]: `${scale}`,
 				backgroundColor: canvasBackground || 'white',

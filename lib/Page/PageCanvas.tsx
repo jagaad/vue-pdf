@@ -16,9 +16,7 @@ import type { RenderParameters } from 'pdfjs-dist/types/src/display/api';
 
 const ANNOTATION_MODE = pdfjs.AnnotationMode;
 
-type PageCanvasProps = {
-	canvasRef?: Ref<HTMLCanvasElement>;
-};
+type PageCanvasProps = {};
 
 export default function PageCanvas(props: PageCanvasProps) {
 	const context = useContext(PageContext);
@@ -36,7 +34,6 @@ export default function PageCanvas(props: PageCanvasProps) {
 		rotate,
 		scale,
 	} = mergedProps;
-	const { canvasRef } = props;
 
 	const canvasElement = ref<HTMLCanvasElement | null>(null);
 
@@ -169,7 +166,7 @@ export default function PageCanvas(props: PageCanvasProps) {
 		<canvas
 			class="react-pdf__Page__canvas"
 			dir="ltr"
-			ref={mergeRefs(canvasRef, canvasElement)}
+			ref={canvasElement}
 			style={{
 				display: 'block',
 				userSelect: 'none',
