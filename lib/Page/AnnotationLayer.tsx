@@ -124,7 +124,6 @@ export default function AnnotationLayer() {
 			onLoadSuccess();
 		},
 		// Ommitted callbacks so they are not called every time they change
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[annotations],
 	);
 
@@ -190,7 +189,6 @@ export default function AnnotationLayer() {
 	useEffect(
 		renderAnnotationLayer,
 		// Ommitted callbacks so they are not called every time they change
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[annotations, imageResourcesPath, linkService, page, renderForms, viewport],
 	);
 

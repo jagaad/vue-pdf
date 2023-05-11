@@ -135,7 +135,6 @@ export default function PageCanvas(props: PageCanvasProps) {
 	useEffect(
 		drawPageOnCanvas,
 		// Ommitted callbacks so they are not called every time they change
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[
 			canvasBackground,
 			canvasElement,

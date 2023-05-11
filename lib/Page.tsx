@@ -265,7 +265,6 @@ export default function Page(props: PageProps) {
 			onLoadSuccess();
 		},
 		// Ommitted callbacks so they are not called every time they change
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[page, scale],
 	);
 

@@ -297,7 +297,6 @@ const Document = defineComponent<DocumentProps>({
 				onSourceSuccess();
 			},
 			// Ommitted callbacks so they are not called every time they change
-			// eslint-disable-next-line react-hooks/exhaustive-deps
 			[source],
 		);
 
@@ -377,7 +376,6 @@ const Document = defineComponent<DocumentProps>({
 		useEffect(
 			loadDocument,
 			// Ommitted callbacks so they are not called every time they change
-			// eslint-disable-next-line react-hooks/exhaustive-deps
 			[options, pdfDispatch, source],
 		);
 
@@ -395,7 +393,6 @@ const Document = defineComponent<DocumentProps>({
 				onLoadSuccess();
 			},
 			// Ommitted callbacks so they are not called every time they change
-			// eslint-disable-next-line react-hooks/exhaustive-deps
 			[pdf],
 		);
 

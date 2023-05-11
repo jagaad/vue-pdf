@@ -132,7 +132,6 @@ export default function PageSVG() {
 			onRenderSuccess();
 		},
 		// Ommitted callbacks so they are not called every time they change
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[svg],
 	);
 

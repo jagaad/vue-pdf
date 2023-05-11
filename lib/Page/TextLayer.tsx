@@ -128,7 +128,6 @@ export default function TextLayer() {
 			onLoadSuccess();
 		},
 		// Ommitted callbacks so they are not called every time they change
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[textContent],
 	);
 
