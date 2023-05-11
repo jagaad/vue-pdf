@@ -23,7 +23,7 @@ type SVGGraphics = {
 	) => Promise<SVGElement>;
 };
 
-export default function PageSVG() {
+export function PageSVG() {
 	const context = inject(PageContext, null);
 
 	invariant(context, 'Unable to find Page context.');

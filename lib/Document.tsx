@@ -10,9 +10,9 @@ import * as pdfjs from 'pdfjs-dist';
 
 import DocumentContext from './DocumentContext';
 
-import Message from './Message';
+import { Message } from './Message';
 
-import LinkService from './LinkService';
+import { LinkService } from './LinkService';
 import PasswordResponses from './PasswordResponses';
 
 import {
@@ -105,7 +105,7 @@ const defaultOnPassword: OnPassword = (callback, reason) => {
 	}
 };
 
-const Document = defineComponent<DocumentProps>({
+export const Document = defineComponent<DocumentProps>({
 	setup(props, { expose, slots }) {
 		// TODO
 		// eslint-disable-next-line vue/no-setup-props-destructure
@@ -473,5 +473,3 @@ const Document = defineComponent<DocumentProps>({
 		);
 	},
 });
-
-export default Document;

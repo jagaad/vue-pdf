@@ -4,7 +4,7 @@ import invariant from 'tiny-invariant';
 import DocumentContext from './DocumentContext';
 import OutlineContext from './OutlineContext';
 
-import PdfRef from './PdfRef';
+import { PdfRef } from './PdfRef';
 
 import { isDefined } from './shared/utils';
 
@@ -37,7 +37,7 @@ type OutlineItemProps = {
 	item: PDFOutlineItem;
 };
 
-export default function OutlineItem(props: OutlineItemProps) {
+export function OutlineItem(props: OutlineItemProps) {
 	const documentContext = inject(DocumentContext, null);
 
 	invariant(

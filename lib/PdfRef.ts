@@ -1,4 +1,4 @@
-export default class PdfRef {
+export class PdfRef {
 	num: number;
 	gen: number;
 

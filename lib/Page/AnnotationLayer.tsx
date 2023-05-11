@@ -12,7 +12,7 @@ import { cancelRunningTask } from '../shared/utils';
 
 import type { Annotations } from '../shared/types';
 
-export default function AnnotationLayer() {
+export function AnnotationLayer() {
 	const documentContext = inject(DocumentContext, null);
 
 	invariant(

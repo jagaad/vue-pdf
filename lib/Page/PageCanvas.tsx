@@ -18,7 +18,7 @@ const ANNOTATION_MODE = pdfjs.AnnotationMode;
 
 type PageCanvasProps = {};
 
-export default function PageCanvas(props: PageCanvasProps) {
+export function PageCanvas(props: PageCanvasProps) {
 	const context = inject(PageContext, null);
 
 	invariant(context, 'Unable to find Page context.');

@@ -13,7 +13,7 @@ import type {
 	TextItem,
 } from 'pdfjs-dist/types/src/display/api';
 import type { AnnotationLayerParameters } from 'pdfjs-dist/types/src/display/annotation_layer';
-import type LinkService from '../LinkService';
+import type { LinkService } from '../LinkService';
 
 /* Primitive types */
 export type Annotations = AnnotationLayerParameters['annotations'];

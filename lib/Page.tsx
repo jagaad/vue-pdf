@@ -7,11 +7,11 @@ import warning from 'tiny-warning';
 import DocumentContext from './DocumentContext';
 import PageContext from './PageContext';
 
-import Message from './Message';
-import PageCanvas from './Page/PageCanvas';
-import PageSVG from './Page/PageSVG';
-import TextLayer from './Page/TextLayer';
-import AnnotationLayer from './Page/AnnotationLayer';
+import { Message } from './Message';
+import { PageCanvas } from './Page/PageCanvas';
+import { PageSVG } from './Page/PageSVG';
+import { TextLayer } from './Page/TextLayer';
+import { AnnotationLayer } from './Page/AnnotationLayer';
 
 import {
 	cancelRunningTask,
@@ -81,7 +81,7 @@ type PageProps = {
 	width?: number;
 } & EventProps<PageCallback | false | undefined>;
 
-export default function Page(props: PageProps) {
+export function Page(props: PageProps) {
 	const context = inject(DocumentContext, null);
 
 	invariant(

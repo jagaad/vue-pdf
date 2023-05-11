@@ -19,7 +19,7 @@ function isTextItem(item: TextItem | TextMarkedContent): item is TextItem {
 	return 'str' in item;
 }
 
-export default function TextLayer() {
+export function TextLayer() {
 	const context = inject(PageContext, null);
 
 	invariant(context, 'Unable to find Page context.');

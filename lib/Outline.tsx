@@ -7,7 +7,7 @@ import warning from 'tiny-warning';
 import DocumentContext from './DocumentContext';
 import OutlineContext from './OutlineContext';
 
-import OutlineItem from './OutlineItem';
+import { OutlineItem } from './OutlineItem';
 
 import { cancelRunningTask } from './shared/utils';
 
@@ -28,7 +28,7 @@ type OutlineProps = {
 	pdf?: PDFDocumentProxy | false;
 } & EventProps<PDFOutline | null | false | undefined>;
 
-export default function Outline(props: OutlineProps) {
+export function Outline(props: OutlineProps) {
 	const context = inject(DocumentContext, null);
 
 	invariant(

@@ -4,7 +4,10 @@ type MessageProps = {
 	type: 'error' | 'loading' | 'no-data';
 };
 
-const Message: FunctionalComponent<MessageProps> = ({ type }, { slots }) => {
+export const Message: FunctionalComponent<MessageProps> = (
+	{ type },
+	{ slots },
+) => {
 	return (
 		<div
 			class={`react-pdf__message react-pdf__message--${type}`}
@@ -13,4 +16,3 @@ const Message: FunctionalComponent<MessageProps> = ({ type }, { slots }) => {
 	);
 };
 
-export default Message;

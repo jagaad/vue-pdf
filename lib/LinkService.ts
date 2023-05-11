@@ -32,7 +32,7 @@ type PDFViewer = {
 	scrollPageIntoView: (args: ScrollPageIntoViewArgs) => void;
 };
 
-export default class LinkService implements IPDFLinkService {
+export class LinkService implements IPDFLinkService {
 	externalLinkEnabled: boolean;
 	externalLinkRel?: ExternalLinkRel;
 	externalLinkTarget?: ExternalLinkTarget;
