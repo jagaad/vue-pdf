@@ -1,4 +1,4 @@
-import { inject, ref } from 'vue';
+import { defineComponent, inject, ref } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
@@ -21,7 +21,7 @@ function isTextItem(item: TextItem | TextMarkedContent): item is TextItem {
 	return 'str' in item;
 }
 
-export function TextLayer() {
+export const TextLayer = defineComponent(() => {
 	const context = inject(PageContext, null);
 
 	invariant(context, 'Unable to find Page context.');
@@ -256,7 +256,7 @@ export function TextLayer() {
 		viewport,
 	]);
 
-	return (
+	return () => (
 		<div
 			class="react-pdf__Page__textContent textLayer"
 			onMouseUp={onMouseUp}
@@ -264,4 +264,4 @@ export function TextLayer() {
 			ref={layerElement}
 		/>
 	);
-}
+});

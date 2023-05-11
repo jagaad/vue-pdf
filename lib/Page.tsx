@@ -1,4 +1,4 @@
-import { inject, provide, ref, type Ref, Fragment } from 'vue';
+import { inject, provide, ref, type Ref, Fragment, defineComponent } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import makeEventProps from 'make-event-props';
 import invariant from 'tiny-invariant';
@@ -81,7 +81,7 @@ type PageProps = {
 	width?: number;
 } & EventProps<PageCallback | false | undefined>;
 
-export function Page(props: PageProps) {
+export const Page = defineComponent<PageProps>((props) => {
 	const context = inject(DocumentContext, null);
 
 	invariant(
@@ -379,7 +379,7 @@ export function Page(props: PageProps) {
 		);
 	}
 
-	return (
+	return () => (
 		<div
 			class={['react-pdf__Page', className]}
 			data-page-number={pageNumber}
@@ -396,4 +396,4 @@ export function Page(props: PageProps) {
 			{renderContent()}
 		</div>
 	);
-}
+});

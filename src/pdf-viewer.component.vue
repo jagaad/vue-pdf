@@ -3,7 +3,7 @@
 		<Document
 			:file="url"
 			:class="classes.documentRoot"
-			:onLoadSuccess="onDocumentLoadSuccess"
+			:on-load-success="onDocumentLoadSuccess"
 		>
 			<Page :page-number="pageNumber" class="border" />
 			<div class="mx-2 mt-2 flex justify-between">

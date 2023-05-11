@@ -1,4 +1,4 @@
-import { inject, ref } from 'vue';
+import { defineComponent, inject, ref } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
@@ -14,7 +14,7 @@ import { cancelRunningTask } from '../shared/utils';
 
 import type { Annotations } from '../shared/types';
 
-export function AnnotationLayer() {
+export const AnnotationLayer = defineComponent(() => {
 	const documentContext = inject(DocumentContext, null);
 
 	invariant(
@@ -194,10 +194,10 @@ export function AnnotationLayer() {
 		[annotations, imageResourcesPath, linkService, page, renderForms, viewport],
 	);
 
-	return (
+	return () => (
 		<div
 			class="react-pdf__Page__annotations annotationLayer"
 			ref={layerElement}
 		/>
 	);
-}
+});

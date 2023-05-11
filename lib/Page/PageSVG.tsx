@@ -1,4 +1,4 @@
-import { inject } from 'vue';
+import { defineComponent, inject } from 'vue';
 import makeCancellable from 'make-cancellable-promise';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
@@ -23,7 +23,7 @@ type SVGGraphics = {
 	) => Promise<SVGElement>;
 };
 
-export function PageSVG() {
+export const PageSVG = defineComponent(() => {
 	const context = inject(PageContext, null);
 
 	invariant(context, 'Unable to find Page context.');
@@ -153,7 +153,7 @@ export function PageSVG() {
 
 	const { width, height } = viewport;
 
-	return (
+	return () => (
 		<div
 			class="react-pdf__Page__svg"
 			// Note: This cannot be shortened, as we need this function to be called with each render.
@@ -168,4 +168,4 @@ export function PageSVG() {
 			}}
 		/>
 	);
-}
+});

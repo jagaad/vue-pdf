@@ -105,371 +105,370 @@ const defaultOnPassword: OnPassword = (callback, reason) => {
 	}
 };
 
-export const Document = defineComponent<DocumentProps>({
-	setup(props, { expose, slots }) {
-		// TODO
-		// eslint-disable-next-line vue/no-setup-props-destructure
-		const {
-			externalLinkRel,
-			externalLinkTarget,
-			file,
-			inputRef,
-			imageResourcesPath,
-			onItemClick,
-			onLoadError: onLoadErrorProps,
-			onLoadProgress,
-			onLoadSuccess: onLoadSuccessProps,
-			onPassword = defaultOnPassword,
-			onSourceError: onSourceErrorProps,
-			onSourceSuccess: onSourceSuccessProps,
-			options,
-			renderMode,
-			rotate,
-			...otherProps
-		} = props;
+export const Document = defineComponent<DocumentProps>((props, ctx) => {
+	const { expose, slots } = ctx;
+	// TODO
+	// eslint-disable-next-line vue/no-setup-props-destructure
+	const {
+		externalLinkRel,
+		externalLinkTarget,
+		file,
+		inputRef,
+		imageResourcesPath,
+		onItemClick,
+		onLoadError: onLoadErrorProps,
+		onLoadProgress,
+		onLoadSuccess: onLoadSuccessProps,
+		onPassword = defaultOnPassword,
+		onSourceError: onSourceErrorProps,
+		onSourceSuccess: onSourceSuccessProps,
+		options,
+		renderMode,
+		rotate,
+		...otherProps
+	} = props;
 
-		const [sourceState, sourceDispatch] = useResolver<Source | null>();
-		const { value: source, error: sourceError } = sourceState;
-		const [pdfState, pdfDispatch] = useResolver<PDFDocumentProxy>();
-		const { value: pdf, error: pdfError } = pdfState;
+	const [sourceState, sourceDispatch] = useResolver<Source | null>();
+	const { value: source, error: sourceError } = sourceState;
+	const [pdfState, pdfDispatch] = useResolver<PDFDocumentProxy>();
+	const { value: pdf, error: pdfError } = pdfState;
 
-		const linkService = new LinkService();
+	const linkService = new LinkService();
 
-		const pages = ref<HTMLDivElement[]>([]);
+	const pages = ref<HTMLDivElement[]>([]);
 
-		const viewer = ref({
-			// Handling jumping to internal links target
-			scrollPageIntoView: ({
-				dest,
-				pageIndex,
-				pageNumber,
-			}: ScrollPageIntoViewArgs) => {
-				// First, check if custom handling of onItemClick was provided
-				if (onItemClick) {
-					onItemClick({ dest, pageIndex, pageNumber });
-					return;
-				}
-
-				// If not, try to look for target page within the <Document>.
-				const page = pages.value[pageIndex];
-
-				if (page) {
-					// Scroll to the page automatically
-					page.scrollIntoView();
-					return;
-				}
-
-				warning(
-					false,
-					`An internal link leading to page ${pageNumber} was clicked, but neither <Document> was provided with onItemClick nor it was able to find the page within itself. Either provide onItemClick to <Document> and handle navigating by yourself or ensure that all pages are rendered within <Document>.`,
-				);
-			},
-		});
-
-		expose({
-			linkService,
-			pages,
-			viewer,
-		});
-
-		/**
-		 * Called when a document source is resolved correctly
-		 */
-		function onSourceSuccess() {
-			if (onSourceSuccessProps) {
-				onSourceSuccessProps();
-			}
-		}
-
-		/**
-		 * Called when a document source failed to be resolved correctly
-		 */
-		function onSourceError() {
-			if (!sourceError) {
-				// Impossible, but TypeScript doesn't know that
+	const viewer = ref({
+		// Handling jumping to internal links target
+		scrollPageIntoView: ({
+			dest,
+			pageIndex,
+			pageNumber,
+		}: ScrollPageIntoViewArgs) => {
+			// First, check if custom handling of onItemClick was provided
+			if (onItemClick) {
+				onItemClick({ dest, pageIndex, pageNumber });
 				return;
 			}
 
-			warning(false, sourceError.toString());
+			// If not, try to look for target page within the <Document>.
+			const page = pages.value[pageIndex];
 
-			if (onSourceErrorProps) {
-				onSourceErrorProps(sourceError);
-			}
-		}
-
-		function resetSource() {
-			sourceDispatch({ type: 'RESET' });
-		}
-
-		useEffect(resetSource, [file, sourceDispatch]);
-
-		const findDocumentSource = useCallback(async (): Promise<Source | null> => {
-			if (!file) {
-				return null;
+			if (page) {
+				// Scroll to the page automatically
+				page.scrollIntoView();
+				return;
 			}
 
-			// File is a string
-			if (typeof file === 'string') {
-				if (isDataURI(file)) {
-					const fileByteString = dataURItoByteString(file);
-					return { data: fileByteString };
-				}
-
-				displayCORSWarning();
-				return { url: file };
-			}
-
-			// File is PDFDataRangeTransport
-			if (file instanceof PDFDataRangeTransport) {
-				return { range: file };
-			}
-
-			// File is an ArrayBuffer
-			if (isArrayBuffer(file)) {
-				return { data: file };
-			}
-
-			/**
-			 * The cases below are browser-only.
-			 * If you're running on a non-browser environment, these cases will be of no use.
-			 */
-			if (isBrowser) {
-				// File is a Blob
-				if (isBlob(file)) {
-					const data = await loadFromFile(file);
-
-					return { data };
-				}
-			}
-
-			// At this point, file must be an object
-			invariant(
-				typeof file === 'object',
-				'Invalid parameter in file, need either Uint8Array, string or a parameter object',
+			warning(
+				false,
+				`An internal link leading to page ${pageNumber} was clicked, but neither <Document> was provided with onItemClick nor it was able to find the page within itself. Either provide onItemClick to <Document> and handle navigating by yourself or ensure that all pages are rendered within <Document>.`,
 			);
+		},
+	});
 
-			invariant(
-				'data' in file || 'range' in file || 'url' in file,
-				'Invalid parameter object: need either .data, .range or .url',
-			);
+	expose({
+		linkService,
+		pages,
+		viewer,
+	});
 
-			// File .url is a string
-			if ('url' in file && typeof file.url === 'string') {
-				if (isDataURI(file.url)) {
-					const { url, ...otherParams } = file;
-					const fileByteString = dataURItoByteString(url);
-					return { data: fileByteString, ...otherParams };
-				}
+	/**
+	 * Called when a document source is resolved correctly
+	 */
+	function onSourceSuccess() {
+		if (onSourceSuccessProps) {
+			onSourceSuccessProps();
+		}
+	}
 
-				displayCORSWarning();
+	/**
+	 * Called when a document source failed to be resolved correctly
+	 */
+	function onSourceError() {
+		if (!sourceError) {
+			// Impossible, but TypeScript doesn't know that
+			return;
+		}
+
+		warning(false, sourceError.toString());
+
+		if (onSourceErrorProps) {
+			onSourceErrorProps(sourceError);
+		}
+	}
+
+	function resetSource() {
+		sourceDispatch({ type: 'RESET' });
+	}
+
+	useEffect(resetSource, [file, sourceDispatch]);
+
+	const findDocumentSource = useCallback(async (): Promise<Source | null> => {
+		if (!file) {
+			return null;
+		}
+
+		// File is a string
+		if (typeof file === 'string') {
+			if (isDataURI(file)) {
+				const fileByteString = dataURItoByteString(file);
+				return { data: fileByteString };
 			}
 
-			return file;
-		}, [file]);
+			displayCORSWarning();
+			return { url: file };
+		}
 
-		useEffect(() => {
-			const cancellable = makeCancellable(findDocumentSource());
+		// File is PDFDataRangeTransport
+		if (file instanceof PDFDataRangeTransport) {
+			return { range: file };
+		}
 
-			cancellable.promise
-				.then((nextSource) => {
-					sourceDispatch({ type: 'RESOLVE', value: nextSource });
-				})
-				.catch((error) => {
-					sourceDispatch({ type: 'REJECT', error });
-				});
-
-			return () => {
-				cancelRunningTask(cancellable);
-			};
-		}, [findDocumentSource, sourceDispatch]);
-
-		useEffect(
-			() => {
-				if (typeof source === 'undefined') {
-					return;
-				}
-
-				if (source === false) {
-					onSourceError();
-					return;
-				}
-
-				onSourceSuccess();
-			},
-			// Ommitted callbacks so they are not called every time they change
-			[source],
-		);
-
-		/**
-		 * Called when a document is read successfully
-		 */
-		function onLoadSuccess() {
-			if (!pdf) {
-				// Impossible, but TypeScript doesn't know that
-				return;
-			}
-
-			if (onLoadSuccessProps) {
-				onLoadSuccessProps(pdf);
-			}
-
-			pages.value = new Array(pdf.numPages);
-			linkService.setDocument(pdf);
+		// File is an ArrayBuffer
+		if (isArrayBuffer(file)) {
+			return { data: file };
 		}
 
 		/**
-		 * Called when a document failed to read successfully
+		 * The cases below are browser-only.
+		 * If you're running on a non-browser environment, these cases will be of no use.
 		 */
-		function onLoadError() {
-			if (!pdfError) {
-				// Impossible, but TypeScript doesn't know that
-				return;
-			}
+		if (isBrowser) {
+			// File is a Blob
+			if (isBlob(file)) {
+				const data = await loadFromFile(file);
 
-			warning(false, pdfError.toString());
-
-			if (onLoadErrorProps) {
-				onLoadErrorProps(pdfError);
+				return { data };
 			}
 		}
 
-		function resetDocument() {
-			pdfDispatch({ type: 'RESET' });
-		}
-
-		useEffect(resetDocument, [pdfDispatch, source]);
-
-		function loadDocument() {
-			if (!source) {
-				return;
-			}
-
-			const documentInitParams = options
-				? {
-						...source,
-						...options,
-				  }
-				: source;
-
-			const destroyable = pdfjs.getDocument(documentInitParams);
-			if (onLoadProgress) {
-				destroyable.onProgress = onLoadProgress;
-			}
-			if (onPassword) {
-				destroyable.onPassword = onPassword;
-			}
-			const loadingTask = destroyable;
-
-			loadingTask.promise
-				.then((nextPdf) => {
-					pdfDispatch({ type: 'RESOLVE', value: nextPdf });
-				})
-				.catch((error) => {
-					pdfDispatch({ type: 'REJECT', error });
-				});
-
-			return () => {
-				loadingTask.destroy();
-			};
-		}
-
-		useEffect(
-			loadDocument,
-			// Ommitted callbacks so they are not called every time they change
-			[options, pdfDispatch, source],
+		// At this point, file must be an object
+		invariant(
+			typeof file === 'object',
+			'Invalid parameter in file, need either Uint8Array, string or a parameter object',
 		);
 
-		useEffect(
-			() => {
-				if (typeof pdf === 'undefined') {
-					return;
-				}
-
-				if (pdf === false) {
-					onLoadError();
-					return;
-				}
-
-				onLoadSuccess();
-			},
-			// Ommitted callbacks so they are not called every time they change
-			[pdf],
+		invariant(
+			'data' in file || 'range' in file || 'url' in file,
+			'Invalid parameter object: need either .data, .range or .url',
 		);
 
-		function setupLinkService() {
-			linkService.setViewer(viewer.value);
-			linkService.setExternalLinkRel(externalLinkRel);
-			linkService.setExternalLinkTarget(externalLinkTarget);
+		// File .url is a string
+		if ('url' in file && typeof file.url === 'string') {
+			if (isDataURI(file.url)) {
+				const { url, ...otherParams } = file;
+				const fileByteString = dataURItoByteString(url);
+				return { data: fileByteString, ...otherParams };
+			}
+
+			displayCORSWarning();
 		}
 
-		useEffect(setupLinkService, [externalLinkRel, externalLinkTarget]);
+		return file;
+	}, [file]);
 
-		function registerPage(pageIndex: number, ref: HTMLDivElement) {
-			pages.value[pageIndex] = ref;
-		}
+	useEffect(() => {
+		const cancellable = makeCancellable(findDocumentSource());
 
-		function unregisterPage(pageIndex: number) {
-			delete pages.value[pageIndex];
-		}
+		cancellable.promise
+			.then((nextSource) => {
+				sourceDispatch({ type: 'RESOLVE', value: nextSource });
+			})
+			.catch((error) => {
+				sourceDispatch({ type: 'REJECT', error });
+			});
 
-		const childContext: DocumentContextType = {
-			imageResourcesPath,
-			linkService,
-			pdf,
-			registerPage,
-			renderMode,
-			rotate,
-			unregisterPage,
+		return () => {
+			cancelRunningTask(cancellable);
 		};
+	}, [findDocumentSource, sourceDispatch]);
 
-		const eventProps = useMemo(
-			() => makeEventProps(otherProps, () => pdf),
-			[otherProps, pdf],
-		);
-
-		function renderContent() {
-			if (!file) {
-				return (
-					<Message type="no-data">
-						{typeof props.noData === 'function' ? props.noData() : props.noData}
-					</Message>
-				);
+	useEffect(
+		() => {
+			if (typeof source === 'undefined') {
+				return;
 			}
 
-			if (pdf === undefined || pdf === null) {
-				return (
-					<Message type="loading">
-						{typeof props.loading === 'function'
-							? props.loading()
-							: props.loading}
-					</Message>
-				);
+			if (source === false) {
+				onSourceError();
+				return;
+			}
+
+			onSourceSuccess();
+		},
+		// Ommitted callbacks so they are not called every time they change
+		[source],
+	);
+
+	/**
+	 * Called when a document is read successfully
+	 */
+	function onLoadSuccess() {
+		if (!pdf) {
+			// Impossible, but TypeScript doesn't know that
+			return;
+		}
+
+		if (onLoadSuccessProps) {
+			onLoadSuccessProps(pdf);
+		}
+
+		pages.value = new Array(pdf.numPages);
+		linkService.setDocument(pdf);
+	}
+
+	/**
+	 * Called when a document failed to read successfully
+	 */
+	function onLoadError() {
+		if (!pdfError) {
+			// Impossible, but TypeScript doesn't know that
+			return;
+		}
+
+		warning(false, pdfError.toString());
+
+		if (onLoadErrorProps) {
+			onLoadErrorProps(pdfError);
+		}
+	}
+
+	function resetDocument() {
+		pdfDispatch({ type: 'RESET' });
+	}
+
+	useEffect(resetDocument, [pdfDispatch, source]);
+
+	function loadDocument() {
+		if (!source) {
+			return;
+		}
+
+		const documentInitParams = options
+			? {
+					...source,
+					...options,
+			  }
+			: source;
+
+		const destroyable = pdfjs.getDocument(documentInitParams);
+		if (onLoadProgress) {
+			destroyable.onProgress = onLoadProgress;
+		}
+		if (onPassword) {
+			destroyable.onPassword = onPassword;
+		}
+		const loadingTask = destroyable;
+
+		loadingTask.promise
+			.then((nextPdf) => {
+				pdfDispatch({ type: 'RESOLVE', value: nextPdf });
+			})
+			.catch((error) => {
+				pdfDispatch({ type: 'REJECT', error });
+			});
+
+		return () => {
+			loadingTask.destroy();
+		};
+	}
+
+	useEffect(
+		loadDocument,
+		// Ommitted callbacks so they are not called every time they change
+		[options, pdfDispatch, source],
+	);
+
+	useEffect(
+		() => {
+			if (typeof pdf === 'undefined') {
+				return;
 			}
 
 			if (pdf === false) {
-				return (
-					<Message type="error">
-						{typeof props.error === 'function' ? props.error() : props.error}
-					</Message>
-				);
+				onLoadError();
+				return;
 			}
 
-			provide(DocumentContext, childContext);
+			onLoadSuccess();
+		},
+		// Ommitted callbacks so they are not called every time they change
+		[pdf],
+	);
 
-			return <Fragment v-slots={slots} />;
+	function setupLinkService() {
+		linkService.setViewer(viewer.value);
+		linkService.setExternalLinkRel(externalLinkRel);
+		linkService.setExternalLinkTarget(externalLinkTarget);
+	}
+
+	useEffect(setupLinkService, [externalLinkRel, externalLinkTarget]);
+
+	function registerPage(pageIndex: number, ref: HTMLDivElement) {
+		pages.value[pageIndex] = ref;
+	}
+
+	function unregisterPage(pageIndex: number) {
+		delete pages.value[pageIndex];
+	}
+
+	const childContext: DocumentContextType = {
+		imageResourcesPath,
+		linkService,
+		pdf,
+		registerPage,
+		renderMode,
+		rotate,
+		unregisterPage,
+	};
+
+	const eventProps = useMemo(
+		() => makeEventProps(otherProps, () => pdf),
+		[otherProps, pdf],
+	);
+
+	function renderContent() {
+		if (!file) {
+			return (
+				<Message type="no-data">
+					{typeof props.noData === 'function' ? props.noData() : props.noData}
+				</Message>
+			);
 		}
 
-		return (
-			<div
-				class={['react-pdf__Document', props.className]}
-				ref={inputRef}
-				style={{
-					['--scale-factor' as string]: '1',
-				}}
-				{...eventProps}
-			>
-				{renderContent()}
-			</div>
-		);
-	},
+		if (pdf === undefined || pdf === null) {
+			return (
+				<Message type="loading">
+					{typeof props.loading === 'function'
+						? props.loading()
+						: props.loading}
+				</Message>
+			);
+		}
+
+		if (pdf === false) {
+			return (
+				<Message type="error">
+					{typeof props.error === 'function' ? props.error() : props.error}
+				</Message>
+			);
+		}
+
+		provide(DocumentContext, childContext);
+
+		return <Fragment v-slots={slots} />;
+	}
+
+	return () => (
+		<div
+			class={['react-pdf__Document', props.className]}
+			ref={inputRef}
+			style={{
+				['--scale-factor' as string]: '1',
+			}}
+			{...eventProps}
+		>
+			{renderContent()}
+		</div>
+	);
 });

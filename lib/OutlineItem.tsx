@@ -1,4 +1,4 @@
-import { inject, ref } from 'vue';
+import { defineComponent, inject, ref } from 'vue';
 import invariant from 'tiny-invariant';
 
 import DocumentContext from './DocumentContext';
@@ -37,7 +37,7 @@ type OutlineItemProps = {
 	item: PDFOutlineItem;
 };
 
-export function OutlineItem(props: OutlineItemProps) {
+export const OutlineItem = defineComponent<OutlineItemProps>((props) => {
 	const documentContext = inject(DocumentContext, null);
 
 	invariant(
@@ -123,7 +123,7 @@ export function OutlineItem(props: OutlineItemProps) {
 		);
 	}
 
-	return (
+	return () => (
 		<li>
 			<a href="#" onClick={onClick}>
 				{item.title}
@@ -131,4 +131,4 @@ export function OutlineItem(props: OutlineItemProps) {
 			{renderSubitems()}
 		</li>
 	);
-}
+});

@@ -1,4 +1,4 @@
-import { inject, ref, type Ref } from 'vue';
+import { defineComponent, inject, ref } from 'vue';
 import invariant from 'tiny-invariant';
 import warning from 'tiny-warning';
 import * as pdfjs from 'pdfjs-dist';
@@ -18,7 +18,7 @@ const ANNOTATION_MODE = pdfjs.AnnotationMode;
 
 type PageCanvasProps = {};
 
-export function PageCanvas(props: PageCanvasProps) {
+export const PageCanvas = defineComponent<PageCanvasProps>((props) => {
 	const context = inject(PageContext, null);
 
 	invariant(context, 'Unable to find Page context.');
@@ -161,7 +161,7 @@ export function PageCanvas(props: PageCanvasProps) {
 
 	useEffect(() => cleanup, [cleanup]);
 
-	return (
+	return () => (
 		<canvas
 			class="react-pdf__Page__canvas"
 			dir="ltr"
@@ -172,4 +172,4 @@ export function PageCanvas(props: PageCanvasProps) {
 			}}
 		/>
 	);
-}
+});
