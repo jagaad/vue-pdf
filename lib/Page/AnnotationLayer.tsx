@@ -188,5 +188,10 @@ export default function AnnotationLayer() {
     [annotations, imageResourcesPath, linkService, page, renderForms, viewport],
   );
 
-  return <div className="react-pdf__Page__annotations annotationLayer" ref={layerElement} />;
+  return (
+		<div
+			class="react-pdf__Page__annotations annotationLayer"
+			ref={layerElement}
+		/>
+	);
 }

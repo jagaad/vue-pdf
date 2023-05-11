@@ -171,7 +171,7 @@ export default function Outline(props: OutlineProps) {
 
 	return (
 		<div
-			className={clsx('react-pdf__Outline', className)}
+			class={['react-pdf__Outline', className]}
 			ref={inputRef}
 			{...eventProps}
 		>

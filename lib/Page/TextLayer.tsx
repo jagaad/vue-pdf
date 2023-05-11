@@ -246,12 +246,11 @@ export default function TextLayer() {
   ]);
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <div
-      className="react-pdf__Page__textContent textLayer"
-      onMouseUp={onMouseUp}
-      onMouseDown={onMouseDown}
-      ref={layerElement}
-    />
-  );
+		<div
+			class="react-pdf__Page__textContent textLayer"
+			onMouseUp={onMouseUp}
+			onMouseDown={onMouseDown}
+			ref={layerElement}
+		/>
+	);
 }

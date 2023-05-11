@@ -144,18 +144,18 @@ export default function PageSVG() {
   const { width, height } = viewport;
 
   return (
-    <div
-      className="react-pdf__Page__svg"
-      // Note: This cannot be shortened, as we need this function to be called with each render.
-      ref={(ref) => drawPageOnContainer(ref)}
-      style={{
-        display: 'block',
-        backgroundColor: 'white',
-        overflow: 'hidden',
-        width,
-        height,
-        userSelect: 'none',
-      }}
-    />
-  );
+		<div
+			class="react-pdf__Page__svg"
+			// Note: This cannot be shortened, as we need this function to be called with each render.
+			ref={(ref) => drawPageOnContainer(ref)}
+			style={{
+				display: 'block',
+				backgroundColor: 'white',
+				overflow: 'hidden',
+				width,
+				height,
+				userSelect: 'none',
+			}}
+		/>
+	);
 }

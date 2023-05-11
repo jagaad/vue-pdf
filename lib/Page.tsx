@@ -385,7 +385,7 @@ export default function Page(props: PageProps) {
 
 	return (
 		<div
-			className={clsx('react-pdf__Page', className)}
+			class={['react-pdf__Page', className]}
 			data-page-number={pageNumber}
 			ref={mergeRefs(inputRef, pageElement)}
 			style={{

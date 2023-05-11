@@ -124,7 +124,6 @@ export default function OutlineItem(props: OutlineItemProps) {
 
 	return (
 		<li>
-			{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
 			<a href="#" onClick={onClick}>
 				{item.title}
 			</a>
@@ -132,21 +131,3 @@ export default function OutlineItem(props: OutlineItemProps) {
 		</li>
 	);
 }
-
-const isDestination = PropTypes.oneOfType([
-	PropTypes.string,
-	PropTypes.arrayOf(PropTypes.any),
-]);
-
-OutlineItem.propTypes = {
-	item: PropTypes.shape({
-		dest: isDestination,
-		items: PropTypes.arrayOf(
-			PropTypes.shape({
-				dest: isDestination,
-				title: PropTypes.string,
-			}),
-		),
-		title: PropTypes.string,
-	}).isRequired,
-};

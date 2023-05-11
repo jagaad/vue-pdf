@@ -1,6 +1,6 @@
 import 'tailwindcss/tailwind.css';
 
 import { createApp } from 'vue';
-import PdfViewer from './pdf-viewer.component.vue';
+import App from './app.vue';
 
-createApp(PdfViewer, {}).mount('#app');
+createApp(App).mount('#app');

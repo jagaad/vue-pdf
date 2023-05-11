@@ -166,7 +166,7 @@ export default function PageCanvas(props: PageCanvasProps) {
 
 	return (
 		<canvas
-			className="react-pdf__Page__canvas"
+			class="react-pdf__Page__canvas"
 			dir="ltr"
 			ref={mergeRefs(canvasRef, canvasElement)}
 			style={{
