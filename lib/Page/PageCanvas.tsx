@@ -92,7 +92,7 @@ export default function PageCanvas(props: PageCanvasProps) {
 		// Ensures the canvas will be re-rendered from scratch. Otherwise all form data will stay.
 		page.cleanup();
 
-		const { current: canvas } = canvasElement;
+		const { value: canvas } = canvasElement;
 
 		if (!canvas) {
 			return;
@@ -148,7 +148,7 @@ export default function PageCanvas(props: PageCanvasProps) {
 	);
 
 	const cleanup = useCallback(() => {
-		const { current: canvas } = canvasElement;
+		const { value: canvas } = canvasElement;
 
 		/**
 		 * Zeroing the width and height cause most browsers to release graphics

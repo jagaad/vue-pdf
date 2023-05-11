@@ -185,7 +185,7 @@ export default function TextLayer() {
 			return;
 		}
 
-		const { current: layer } = layerElement;
+		const { value: layer } = layerElement;
 
 		if (!layer) {
 			return;

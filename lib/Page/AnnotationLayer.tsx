@@ -152,7 +152,7 @@ export default function AnnotationLayer() {
 			return;
 		}
 
-		const { current: layer } = layerElement;
+		const { value: layer } = layerElement;
 
 		if (!layer) {
 			return;
