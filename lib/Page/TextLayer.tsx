@@ -136,25 +136,22 @@ export const TextLayer = defineComponent(() => {
 	/**
 	 * Called when a text layer is rendered successfully
 	 */
-	const onRenderSuccess = useCallback(() => {
+	const onRenderSuccess = () => {
 		if (onRenderTextLayerSuccess) {
 			onRenderTextLayerSuccess();
 		}
-	}, [onRenderTextLayerSuccess]);
+	};
 
 	/**
 	 * Called when a text layer failed to render successfully
 	 */
-	const onRenderError = useCallback(
-		(error: Error) => {
-			warning(false, error.toString());
+	const onRenderError = (error: Error) => {
+		warning(false, error.toString());
 
-			if (onRenderTextLayerError) {
-				onRenderTextLayerError(error);
-			}
-		},
-		[onRenderTextLayerError],
-	);
+		if (onRenderTextLayerError) {
+			onRenderTextLayerError(error);
+		}
+	};
 
 	function onMouseDown() {
 		const end = endElement.value;

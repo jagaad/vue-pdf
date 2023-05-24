@@ -204,7 +204,7 @@ export const Document = defineComponent<DocumentProps>((props, ctx) => {
 
 	useEffect(resetSource, [file, sourceDispatch]);
 
-	const findDocumentSource = useCallback(async (): Promise<Source | null> => {
+	const findDocumentSource = async (): Promise<Source | null> => {
 		if (!file) {
 			return null;
 		}
@@ -266,7 +266,7 @@ export const Document = defineComponent<DocumentProps>((props, ctx) => {
 		}
 
 		return file;
-	}, [file]);
+	};
 
 	useEffect(() => {
 		const cancellable = makeCancellable(findDocumentSource());

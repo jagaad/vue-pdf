@@ -143,7 +143,7 @@ export const PageCanvas = defineComponent<PageCanvasProps>((props) => {
 		],
 	);
 
-	const cleanup = useCallback(() => {
+	const cleanup = () => {
 		const { value: canvas } = canvasElement;
 
 		/**
@@ -154,7 +154,7 @@ export const PageCanvas = defineComponent<PageCanvasProps>((props) => {
 			canvas.width = 0;
 			canvas.height = 0;
 		}
-	}, [canvasElement]);
+	};
 
 	useEffect(() => cleanup, [cleanup]);
 
