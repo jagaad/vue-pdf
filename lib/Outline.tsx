@@ -19,7 +19,7 @@ import type { OnItemClickArgs, OutlineContextType } from './shared/types';
 
 type PDFOutline = Awaited<ReturnType<PDFDocumentProxy['getOutline']>>;
 
-type OutlineProps = {
+export type OutlineProps = {
 	className?: string;
 	inputRef?: Ref<HTMLDivElement>;
 	onItemClick?: (props: OnItemClickArgs) => void;

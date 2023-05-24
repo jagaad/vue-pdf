@@ -1,6 +1,6 @@
 # vue-pdf
 
-> This is a clone of [`react-pdf`](https://github.com/wojtekmaj/react-pdf/tree/2b0443285ee4c889fb7b416c2cd9ebe03e91ea9e) at the state in the link
+> This is a clone of [`react-pdf`](https://github.com/wojtekmaj/react-pdf/tree/a3e9f5376571a2dc232dc594321598a8ef1953b9) at the state in the link
 
 This template should help get you started developing with Vue 3 in Vite.
 

@@ -68,7 +68,7 @@ type OnSourceError = OnError;
 
 type OnSourceSuccess = () => void;
 
-type DocumentProps = {
+export type DocumentProps = {
 	className?: ClassName;
 	error?: NodeOrRenderer;
 	externalLinkRel?: ExternalLinkRel;
